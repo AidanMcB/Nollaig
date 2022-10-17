@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 
-export default function WishList() {
+export default function WishList(props: any) {
+
+    console.log(props)
 
 
 

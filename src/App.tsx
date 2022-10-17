@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './styles/_index.scss';
 import { Routes, Route } from 'react-router-dom';
 import Login from './components/auth/login/Login';
 import Register from './components/auth/register/Register';
 import './App.css';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { RegisterUser } from './components/auth/AuthInterfaces';
 import { logout } from './components/auth/firebase-auth';
 import { useNavigate } from 'react-router-dom';
 import WishList from './components/wishlist/WishList';
+import Navbar from './components/navbar/Navbar';
 
 function App() {
   
-  const [user, setUser] = useState<RegisterUser>({name: '', password: '', email: ''})
+  const [user, setUser] = useState<any>({name: '', password: '', email: '', id: ''})
   let navigate = useNavigate();
 
   useEffect( () => {
-    // myUser()
+    myUser()
   }, [])
  
   function myUser() {
@@ -24,11 +24,17 @@ function App() {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         const uid = currentUser.uid;
-        setUser({name: currentUser.displayName || '', email: currentUser?.email || '', password: 'x'})
-        console.log(currentUser)
+        setUser({ name: currentUser.displayName || '', 
+          email: currentUser?.email || '', 
+          password: 'x',
+          id: uid,
+        });
+        console.log(currentUser);
+        navigate(`/wishlist/${currentUser.uid}`);
       } else {
         // User is signed out
         console.log('no one logged in')
+        setUser({name: '', password: '', email: '', id: ''});
         navigate('/login')
       }
     });
@@ -38,15 +44,14 @@ function App() {
     logout();
   }
 
-
   return (
     <div className="App">
+      <Navbar user={user} logOut={logOut}/>
       <button onClick={myUser}>my user</button>
-      <button onClick={logOut}>Log Out</button>
       <Routes>
         <Route path='/login' element={<Login/>} />
         <Route path='/register' element={<Register/>} />
-        <Route path='/wishlist/:id' element={<WishList/>} />
+        <Route path='/wishlist/:id' element={<WishList user={user} />} />
       </Routes>
     </div>
   );
