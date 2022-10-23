@@ -11,7 +11,6 @@ export default function Login(){
 
     function submitForm(e: SyntheticEvent){
         e.preventDefault();
-        console.log(userInfo)
         logInWithEmailAndPassword(userInfo.email, userInfo.password);
     }
     

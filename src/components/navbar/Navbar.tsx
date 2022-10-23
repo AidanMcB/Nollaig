@@ -1,11 +1,7 @@
-import { memo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Navbar.scss';
-import { logout } from '../auth/firebase-auth';
 
 function Navbar(props: any) {
-
-    console.log("NavBar Rendered")
 
     return(
         <div className="navbar">

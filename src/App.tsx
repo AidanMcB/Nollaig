@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './styles/_index.scss';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Login from './components/auth/login/Login';
 import Register from './components/auth/register/Register';
 import './App.css';
@@ -14,6 +14,7 @@ function App() {
   
   const [user, setUser] = useState<any>({name: '', password: '', email: '', id: ''})
   let navigate = useNavigate();
+  const location = useLocation();
 
   useEffect( () => {
     myUser()
@@ -29,13 +30,13 @@ function App() {
           password: 'x',
           id: uid,
         });
-        console.log(currentUser);
         navigate(`/wishlist/${currentUser.uid}`);
       } else {
         // User is signed out
-        console.log('no one logged in')
         setUser({name: '', password: '', email: '', id: ''});
-        navigate('/login')
+        if(location.pathname != '/register'){
+          navigate('/login')
+        }
       }
     });
   }

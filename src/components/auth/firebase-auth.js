@@ -9,19 +9,19 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 const createNewUserDocGoogle = async (newUser) => {
+    // create new WishList
+    let newWishList = await addDoc(collection(db, "wishLists"), {
+        userId: newUser.uid,
+        userName: newUser.displayName,
+        gifts: []
+    }); 
     await addDoc(collection(db, "users"), {
         uid: newUser.uid,
         name: newUser.displayName,
         // authProvider: "local",
         email: newUser.email,
-        // wishList: id;
+        wishList: newWishList.id
     });
-    // create new WishList
-    await addDoc(collection(db, "wishLists"), {
-        userId: newUser.uid,
-        userName: newUser.displayName,
-        gifts: []
-    }); 
 }
 
 const signInWithGoogle = async () => {
